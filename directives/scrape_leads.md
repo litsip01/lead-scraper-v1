@@ -12,22 +12,22 @@
 - `execution/validate_leads.py`: Checks if leads match the industry.
 - `execution/update_sheet.py`: Adds data to Google Sheet.
 
+**Email Requirement:**
+- **Only include leads with valid email addresses.**
+- If a lead has no email, skip it and continue searching.
+- Continue scraping until the target number of leads WITH emails is reached.
+- Default target: 5 leads with emails.
+
 **Process:**
 
-1.  **Test Run:**
-    - Run `execution/scrape_leads.py` with `limit=3` (FireCrawl search).
-    - Output: `leads_temp.json`.
+1.  **Scrape with Email Filter:**
+    - Run `execution/scrape_leads.py` with `--require-email` flag.
+    - Script will fetch more results and filter to only those with emails.
+    - Output: `leads_temp.json` (only contains leads with emails).
 
 2.  **Validation:**
     - Run `execution/validate_leads.py` on `leads_temp.json` with `industry`.
     - Check output ratio.
-    - **Logic:**
-        - If match_rate >= 0.8: Proceed to Full Run.
-        - If match_rate < 0.8: Stop and notify user to adjust filters (or implement auto-retry with different keywords).
 
-3.  **Full Run (if validated):**
-    - Run `execution/scrape_leads.py` with full limit (default or specified).
-    - Output: `leads_final.json`.
-
-4.  **Save:**
-    - Run `execution/update_sheet.py` with `leads_final.json` and `sheet_id`.
+3.  **Save:**
+    - Run `execution/update_sheet.py` with `leads_temp.json` and `sheet_id`.
