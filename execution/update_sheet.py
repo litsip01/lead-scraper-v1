@@ -68,14 +68,24 @@ def update_sheet(file_path, sheet_id):
         return
 
     headers = list(leads[0].keys())
-    rows = [headers]
-    for lead in leads:
-        rows.append([str(lead.get(h, "")) for h in headers])
+    
+    # Check if sheet is empty to decide on headers
+    existing_data = sheet.get_all_values()
+    is_empty = len(existing_data) == 0
+    
+    rows_to_append = []
+    if is_empty:
+        rows_to_append.append(headers)
         
-    # Clear and Update
-    sheet.clear()
-    sheet.update(rows)
-    print("Upload Complete.")
+    for lead in leads:
+        rows_to_append.append([str(lead.get(h, "")) for h in headers])
+        
+    # Append to Sheet
+    if rows_to_append:
+        sheet.append_rows(rows_to_append)
+        print(f"Appended {len(rows_to_append)} rows (including headers if new sheet).")
+    else:
+        print("No new data to append.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Upload leads to Google Sheet")
