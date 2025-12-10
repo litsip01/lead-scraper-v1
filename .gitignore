@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment Variables (Secrets)
+.env
+
+# Google Credentials (Secrets)
+secure-approach-*.json
+service_account.json
+credentials.json
+
+# Data (Optional: usually don't want to commit scraped data)
+leads.json
+leads_temp.json
+
+# Logs
+*.log
